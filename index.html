@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório de Variação de Custos K585</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #4361ee;
+  --danger: #ef476f;
+  --warning: #f77f00;
+  --success: #06d6a0;
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --text-main: #2b2d42;
+  --text-muted: #6c757d;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { 
+  font-family: 'Poppins', sans-serif; 
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.report-container { 
+  max-width: 900px; 
+  margin: 0 auto; 
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px; 
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  overflow: hidden; 
+}
+
+/* Header */
+.report-header {
+  padding: 2.5rem 3rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid var(--glass-border);
+}
+.report-title { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+.report-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 5px; }
+
+/* Timeline Vertical */
+.section-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;
+  color: var(--primary); padding: 2rem 3rem 1rem;
+}
+
+.timeline-vertical {
+  padding: 1rem 3rem;
+  position: relative;
+}
+
+.timeline-vertical::before {
+  content: "";
+  position: absolute;
+  left: 54px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--primary) 0%, var(--glass-border) 100%);
+}
+
+.tl-item {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.tl-number {
+  width: 50px; height: 50px; min-width: 50px;
+  background: white;
+  border: 2px solid var(--primary);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: var(--primary);
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(67, 97, 238, 0.1);
+}
+
+.tl-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+.tl-date { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; }
+.tl-title { font-size: 16px; font-weight: 700; margin: 5px 0; }
+.tl-text { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* Imagem da Sinalização (buscando foto.jpg) */
+.screenshot-container {
+  margin-top: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: #fff;
+}
+.screenshot-container img {
+  width: 100%;
+  display: block;
+  /* Estilo caso a imagem não exista ainda */
+  min-height: 100px;
+  background: #f0f0f0;
+}
+
+/* Tabela */
+.cost-table-wrapper { margin: 1rem 3rem 2rem; border-radius: 20px; border: 1px solid var(--glass-border); overflow: hidden; }
+.cost-table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.2); font-size: 13px; }
+.cost-table th { padding: 15px 20px; text-align: left; font-size: 11px; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); }
+.cost-table td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); vertical-align: top; }
+
+.val-main { display: block; font-weight: 700; font-size: 14px; }
+.val-sub { display: block; font-size: 11px; color: var(--text-muted); }
+
+.row-comment {
+  margin-top: 8px; padding: 10px; background: rgba(67, 97, 238, 0.05); 
+  border-radius: 8px; font-size: 11px; color: #444; border-left: 3px solid var(--primary);
+}
+
+.badge-impact {
+  font-size: 10px; font-weight: 700; background: #ffe5ec; color: var(--danger);
+  padding: 3px 8px; border-radius: 4px; display: inline-block;
+}
+
+/* Footer Lado a Lado */
+.footer-totals {
+  margin: 0 3rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+.total-card {
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+}
+.card-approved { background: rgba(255, 255, 255, 0.4); }
+.card-updated { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2); }
+.card-label { font-size: 11px; font-weight: 600; text-transform: uppercase; opacity: 0.8; margin-bottom: 5px; }
+.card-value { font-size: 22px; font-weight: 700; }
+
+@media (max-width: 600px) {
+  .footer-totals { grid-template-columns: 1fr; }
+  .timeline-vertical::before { left: 34px; }
+  .tl-number { width: 40px; height: 40px; min-width: 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="report-container">
+  <div class="report-header">
+    <div class="report-title">Relatório de Variação de Custos — K585</div>
+    <div class="report-subtitle">Flower Machine WM22-CL · RG Design LTDA</div>
+  </div>
+
+  <div class="section-label">Histórico do Processo</div>
+  
+  <div class="timeline-vertical">
+    <!-- 01 -->
+    <div class="tl-item">
+      <div class="tl-number">01</div>
+      <div class="tl-content">
+        <div class="tl-date">Dezembro / 2025</div>
+        <div class="tl-title">Estudo Inicial Elaborado</div>
+        <div class="tl-text">Planejamento aprovado com <strong>II a 0%</strong>, frete internacional de <strong>USD 45,00</strong> e <strong>FOB USD 16.400,00</strong>.</div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="tl-item">
+      <div class="tl-number">02</div>
+      <div class="tl-content">
+        <div class="tl-date">17 de Dezembro / 2025</div>
+        <div class="tl-title">Sinalização Interna: Divergência no II</div>
+        <div class="tl-text">Alerta preventivo realizado pela analista: a alíquota Tecwin para o NCM indicava 12,6%, divergindo do estudo.</div>
+        <!-- IMAGEM AQUI -->
+        <div class="screenshot-container">
+          <img src="foto.jpg" alt="Sinalização de Risco II (foto.jpg)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="tl-item">
+      <div class="tl-number">03</div>
+      <div class="tl-content">
+        <div class="tl-date">Dez/25 – Abril/26</div>
+        <div class="tl-title">Mercado Internacional</div>
+        <div class="tl-text">Cenário externo deteriorado: conflitos no frete internacional, falta de booking e reajustes aduaneiros globais.</div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="tl-item">
+      <div class="tl-number">04</div>
+      <div class="tl-content">
+        <div class="tl-date">Maio / 2026</div>
+        <div class="tl-title">Revisão de Custos Atualizados</div>
+        <div class="tl-text">Solicitação de revisão pela RG Design para refletir os custos reais praticados na data atual.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Análise das Variações</div>
+  
+  <div class="cost-table-wrapper">
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th style="width: 45%;">Item</th>
+          <th>Aprovado (Dez/25)</th>
+          <th>Atualizado (Mai/26)</th>
+          <th style="text-align: right;">Impacto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>FOB Mercadoria</strong>
+            <div class="row-comment"><strong>Nota:</strong> [Inserir comentário sobre diferença de preço aqui]</div>
+          </td>
+          <td><span class="val-main">USD 16.400,00</span></td>
+          <td><span class="val-main">USD 17.000,00</span></td>
+          <td style="text-align: right;"><span class="badge-impact">+ USD 600</span></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Logística Internacional</strong>
+            <div class="row-comment">Inland adicionada (EXW). IOF de 3,5% obrigatório sobre custos na origem.</div>
+          </td>
+          <td><span class="val-main">R$ 5.036,58</span></td>
+          <td><span class="val-main">R$ 8.308,06</span></td>
+          <td style="text-align: right;"><span class="badge-impact">▲ 65%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Imposto de Importação (II)</strong>
+            <div class="row-comment">Risco sinalizado em Dez/25. Sem LI de isenção, aplica-se a alíquota de 20%.</div>
+          </td>
+          <td><span class="val-main">R$ 0,00</span></td>
+          <td><span class="val-main">R$ 17.351,41</span></td>
+          <td style="text-align: right;"><span class="badge-impact">+ R$ 17.351</span></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>IPI & ICMS</strong>
+            <div class="row-comment"><strong>Efeito Cascata:</strong> II integra a base de cálculo, elevando o valor nominal.</div>
+          </td>
+          <td><span class="val-main">R$ 34.736,13</span></td>
+          <td><span class="val-main">R$ 40.025,22</span></td>
+          <td style="text-align: right;"><span class="badge-impact">Cascata</span></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Aduana / DUIMP</strong>
+            <div class="row-comment">Novo sistema DUIMP exige Custo de Catálogo (R$ 3.500).</div>
+          </td>
+          <td><span class="val-main">R$ 3.300,00</span></td>
+          <td><span class="val-main">R$ 6.800,00</span></td>
+          <td style="text-align: right;"><span class="badge-impact">+ R$ 3.500</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-totals">
+    <div class="total-card card-approved">
+      <div class="card-label">Custo Aprovado (Dez/25)</div>
+      <div class="card-value">R$ 167.183,42</div>
+    </div>
+    <div class="total-card card-updated">
+      <div class="card-label">Custo Atualizado (Mai/26)</div>
+      <div class="card-value">R$ 195.232,89</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
